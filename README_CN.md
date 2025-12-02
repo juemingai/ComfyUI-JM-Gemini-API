@@ -7,13 +7,13 @@
 ## 功能特性
 
 - 支持多个Gemini模型：
-  - `gemini-3-pro-image-preview`（默认，支持2K分辨率）
+  - `gemini-3-pro-image-preview`（默认，支持1K/2K/4K分辨率）
   - `gemini-2.5-flash-image`
 - 文生图（Text-to-Image）
 - 图生图（Image-to-Image）支持单张或多张图片输入
 - 图片编辑模式（单图输入）
 - 可配置的宽高比（1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9）
-- 分辨率控制（480p, 720p, 768P, 1080p, 2K, 4K）- 仅适用于gemini-3-pro-image-preview
+- 分辨率控制（1K, 2K, 4K）- 仅适用于gemini-3-pro-image-preview
 - 最多支持10张图片输入
 - 自动保存图像到ComfyUI的output目录
 
@@ -82,10 +82,10 @@ pip install -r requirements.txt
 - **gemini_api_key**：您的Gemini API密钥（字符串）
 - **prompt**：描述要生成图像的文本提示词（多行文本）
 - **model**：选择模型：
-  - `gemini-3-pro-image-preview`（默认，支持2K/4K分辨率）
+  - `gemini-3-pro-image-preview`（默认，支持1K/2K/4K分辨率）
   - `gemini-2.5-flash-image`（速度更快，仅使用宽高比）
 - **aspect_ratio**：图像宽高比（1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9）
-- **resolution**：图像分辨率（480p, 720p, 768P, 1080p, 2K, 4K）
+- **resolution**：图像分辨率（1K, 2K, 4K）
   - 注意：仅对`gemini-3-pro-image-preview`模型有效
   - 默认值：2K
 
@@ -142,13 +142,6 @@ pip install -r requirements.txt
 - 仅使用宽高比（无分辨率参数）
 - 适合快速迭代
 
-## 分辨率映射
-
-对于`gemini-3-pro-image-preview`：
-- 480p、720p → 1K
-- 768P、1080p、1080P、2K → 2K（默认）
-- 4K → 4K
-
 ## 常见问题
 
 ### 常见错误
@@ -167,7 +160,7 @@ pip install -r requirements.txt
    - 检查Gemini API服务状态
 
 4. **图像质量问题**
-   - 对于gemini-3-pro-image-preview，尝试使用2K或4K分辨率
+   - 对于gemini-3-pro-image-preview，尝试使用1K/2K/4K分辨率
    - 让提示词更加详细和具体
 
 ## 输出目录

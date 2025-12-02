@@ -13,7 +13,7 @@ English | [简体中文](README_CN.md)
 - Image-to-image generation (single or multiple input images)
 - Image editing mode (single image input)
 - Configurable aspect ratios (1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9)
-- Resolution control (480p, 720p, 768P, 1080p, 2K, 4K) - only for gemini-3-pro-image-preview
+- Resolution control (1K, 2K, 4K) - only for gemini-3-pro-image-preview
 - Support up to 10 input images
 - Automatic image saving to ComfyUI output directory
 
@@ -76,10 +76,10 @@ pip install -r requirements.txt
 - **gemini_api_key**: Your Gemini API key (string)
 - **prompt**: Text prompt describing the image you want to generate (multiline text)
 - **model**: Choose between:
-  - `gemini-3-pro-image-preview` (default, supports 2K/4K resolution)
+  - `gemini-3-pro-image-preview` (default, supports 1K/2K/4K resolution)
   - `gemini-2.5-flash-image` (faster, aspect ratio only)
 - **aspect_ratio**: Image aspect ratio (1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9)
-- **resolution**: Image resolution (480p, 720p, 768P, 1080p, 2K, 4K)
+- **resolution**: Image resolution (1K, 2K, 4K)
   - Note: Only effective for `gemini-3-pro-image-preview` model
   - Default: 2K
 
@@ -136,13 +136,6 @@ pip install -r requirements.txt
 - Uses aspect ratio only (no resolution parameter)
 - Good for quick iterations
 
-## Resolution Mapping
-
-For `gemini-3-pro-image-preview`:
-- 480p, 720p → 1K
-- 768P, 1080p, 1080P, 2K → 2K (default)
-- 4K → 4K
-
 ## Troubleshooting
 
 ### Common Issues
@@ -161,7 +154,7 @@ For `gemini-3-pro-image-preview`:
    - Check Gemini API service status
 
 4. **Image quality issues**
-   - For gemini-3-pro-image-preview, try using 2K or 4K resolution
+   - For gemini-3-pro-image-preview, try using different resolutions (1K, 2K, or 4K)
    - Make your prompt more detailed and specific
 
 ## Output Directory

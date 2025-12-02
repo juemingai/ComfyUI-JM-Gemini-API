@@ -36,16 +36,9 @@ MODEL_CONFIGS = {
     }
 }
 
-# 分辨率映射 - Gemini 3 Pro支持的分辨率
-RESOLUTION_MAPPING = {
-    "480p": "1K",
-    "720p": "1K",
-    "768P": "2K",
-    "1080p": "2K",
-    "1080P": "2K",
-    "2K": "2K",
-    "4K": "4K"
-}
+# Gemini 3 Pro支持的分辨率
+# 用户可选：1K, 2K, 4K
+SUPPORTED_RESOLUTIONS = ["1K", "2K", "4K"]
 
 # Gemini 2.5 Flash Image 支持的宽高比及对应分辨率
 ASPECT_RATIO_RESOLUTIONS = {
@@ -126,10 +119,7 @@ class JMGeminiImageGenerator:
                 ], {
                     "default": "1:1"
                 }),
-                "resolution": ([
-                    "480p", "720p", "768P", "1080p",
-                    "1080P", "2K", "4K"
-                ], {
+                "resolution": (["1K", "2K", "4K"], {
                     "default": "2K"
                 }),
             },
@@ -249,7 +239,8 @@ class JMGeminiImageGenerator:
             resolution_info = ASPECT_RATIO_RESOLUTIONS.get(aspect_ratio, "1024x1024")
         else:
             # Gemini 3 Pro Image
-            image_size = RESOLUTION_MAPPING.get(resolution, DEFAULT_RESOLUTION)
+            # 直接使用用户选择的分辨率（1K, 2K, 4K）
+            image_size = resolution if resolution in SUPPORTED_RESOLUTIONS else DEFAULT_RESOLUTION
             config = types.GenerateContentConfig(
                 response_modalities=['TEXT', 'IMAGE'],
                 image_config=types.ImageConfig(
@@ -319,7 +310,8 @@ class JMGeminiImageGenerator:
             resolution_info = ASPECT_RATIO_RESOLUTIONS.get(aspect_ratio, "1024x1024")
         else:
             # Gemini 3 Pro Image
-            image_size = RESOLUTION_MAPPING.get(resolution, DEFAULT_RESOLUTION)
+            # 直接使用用户选择的分辨率（1K, 2K, 4K）
+            image_size = resolution if resolution in SUPPORTED_RESOLUTIONS else DEFAULT_RESOLUTION
             config = types.GenerateContentConfig(
                 response_modalities=['TEXT', 'IMAGE'],
                 image_config=types.ImageConfig(
