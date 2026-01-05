@@ -113,9 +113,18 @@ class JMGeminiReverseGenerator:
                 if parsed.get("secure_1psidts"):
                     config["secure_1psidts"] = parsed["secure_1psidts"]
                     logger.info("[JM-Gemini-Reverse] ✓ 提取 secure_1psidts")
+
+                # 处理 SNlM0e：如果自动获取失败，保留配置文件中已有的值
                 if parsed.get("snlm0e"):
                     config["snlm0e"] = parsed["snlm0e"]
-                    logger.info("[JM-Gemini-Reverse] ✓ 获取 snlm0e")
+                    logger.info("[JM-Gemini-Reverse] ✓ 自动获取 snlm0e")
+                elif config.get("snlm0e"):
+                    logger.info("[JM-Gemini-Reverse] ℹ️  SNlM0e 自动获取失败，保留配置文件中的已有值")
+                else:
+                    logger.warning("[JM-Gemini-Reverse] ⚠️  SNlM0e 自动获取失败且配置文件中无已有值")
+                    logger.warning("[JM-Gemini-Reverse] 请手动从 Network 请求中获取 SNlM0e")
+                    logger.warning("[JM-Gemini-Reverse] 详见: config/README_Cookie配置说明.md")
+
                 if parsed.get("push_id"):
                     config["push_id"] = parsed["push_id"]
                     logger.info("[JM-Gemini-Reverse] ✓ 获取 push_id")

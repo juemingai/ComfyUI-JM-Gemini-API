@@ -209,12 +209,24 @@ class CookieConfig:
 
             print("[Cookie配置] 正在访问 Gemini 页面...")
             resp = session.get("https://gemini.google.com")
+            print(f"[Cookie配置] 响应状态码: {resp.status_code}")
 
             if resp.status_code != 200:
                 print(f"[Cookie配置] 访问失败，状态码: {resp.status_code}")
+                # 保存调试页面
+                debug_file = Path(__file__).parent / "debug_gemini_page.html"
+                with open(debug_file, "w", encoding="utf-8") as f:
+                    f.write(resp.text)
+                print(f"[Cookie配置] 响应内容已保存到 {debug_file}")
                 return result
 
             html = resp.text
+
+            # 保存调试页面
+            debug_file = Path(__file__).parent / "debug_gemini_page.html"
+            with open(debug_file, "w", encoding="utf-8") as f:
+                f.write(html)
+            print(f"[Cookie配置] 页面内容已保存到 {debug_file} (大小: {len(html)} 字节)")
 
             # 获取 SNLM0E (AT Token)
             snlm0e_patterns = [
@@ -222,15 +234,29 @@ class CookieConfig:
                 r'SNlM0e["\s:]+["\']([^"\']+)["\']',
                 r'"at":"([^"]+)"',
             ]
-            for pattern in snlm0e_patterns:
+            for i, pattern in enumerate(snlm0e_patterns):
                 match = re.search(pattern, html)
                 if match:
                     result["snlm0e"] = match.group(1)
-                    print(f"[Cookie配置] 找到 SNLM0E: {result['snlm0e'][:20]}...")
+                    print(f"[Cookie配置] 找到 SNLM0E (模式 {i+1}): {result['snlm0e'][:20]}...")
                     break
 
             if not result["snlm0e"]:
                 print("[Cookie配置] 警告: 未找到 SNLM0E Token")
+                print("[Cookie配置] 正在搜索可能的位置...")
+                # 搜索关键字并打印上下文
+                for keyword in ["SNlM0e", "\"at\"", "'at'"]:
+                    pos = html.find(keyword)
+                    if pos >= 0:
+                        print(f"[Cookie配置] 找到关键字 '{keyword}' 在位置 {pos}")
+                        context = html[max(0, pos-50):pos+150]
+                        print(f"[Cookie配置] 上下文: {context[:200]}")
+                        print()
+
+                print("[Cookie配置] ⚠️  建议:")
+                print("  1. 检查保存的 debug_gemini_page.html 文件")
+                print("  2. 确认 Cookie 是否过期（重新登录 Gemini）")
+                print("  3. 手动从页面源码获取 SNlM0e（见配置说明文档）")
 
             # 获取 PUSH_ID
             push_id_patterns = [
