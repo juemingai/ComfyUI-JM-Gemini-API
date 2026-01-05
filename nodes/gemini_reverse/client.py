@@ -446,20 +446,12 @@ class GeminiClient:
         # 处理图片数据 - 支持单图和多图
         image_data = None
         if image_paths and len(image_paths) > 0:
-            if len(image_paths) == 1:
-                # 单图模式（保持兼容）
-                path = image_paths[0]
-                mime_type = images[0]["mime_type"] if images else "image/png"
-                filename = f"image_{random.randint(100000, 999999)}.png"
-                image_data = [[[path, 1, None, mime_type], filename]]
-            else:
-                # 多图模式 - 嵌套数组格式
-                image_items = []
-                for i, path in enumerate(image_paths):
-                    mime_type = images[i]["mime_type"] if (images and i < len(images)) else "image/png"
-                    filename = f"image_{i}_{random.randint(100000, 999999)}.png"
-                    image_items.append([[path, 1, None, mime_type], filename])
-                image_data = [image_items]  # 外层再包一层数组
+            # 统一格式处理单图和多图
+            image_data = []
+            for i, path in enumerate(image_paths):
+                mime_type = images[i]["mime_type"] if (images and i < len(images)) else "image/png"
+                filename = f"image_{i}_{random.randint(100000, 999999)}.png"
+                image_data.append([[path, 1, None, mime_type], filename])
         
         # 生成唯一会话 ID
         session_id = str(uuid.uuid4()).upper()
