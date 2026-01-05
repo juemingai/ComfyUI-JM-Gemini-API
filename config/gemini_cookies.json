@@ -1,0 +1,42 @@
+{
+  "_comment": "Gemini 逆向工程配置文件",
+  "_说明": "请按照以下步骤获取配置信息",
+
+  "secure_1psid": "",
+  "_secure_1psid_说明": "从浏览器 Cookies 中复制 __Secure-1PSID 的值",
+
+  "secure_1psidts": "",
+  "_secure_1psidts_说明": "从浏览器 Cookies 中复制 __Secure-1PSIDTS 的值（可选但推荐）",
+
+  "snlm0e": "",
+  "_snlm0e_说明": "从 Network 请求中获取 SNlM0e 值，或在页面源码中搜索 'SNlM0e'",
+
+  "push_id": "",
+  "_push_id_说明": "格式: feeds/xxxxx，从上传图片请求的请求头中获取",
+
+  "model_ids": {
+    "flash": "56fdd199312815e2",
+    "pro": "e6fa609c3fa255c0",
+    "thinking": "e051ce1aa80aa576"
+  },
+  "_model_ids_说明": "如果模型切换不生效，需要从 Network 抓包更新这些 ID",
+
+  "_获取步骤": {
+    "1": "访问 https://gemini.google.com 并登录",
+    "2": "按 F12 打开开发者工具",
+    "3": "切换到 Application 标签 -> Cookies -> https://gemini.google.com",
+    "4": "复制 __Secure-1PSID 和 __Secure-1PSIDTS 的值",
+    "5": "切换到 Network 标签，在 Gemini 中发送一条消息",
+    "6": "找到 StreamGenerate 请求，查看请求头中的 push-id",
+    "7": "按 Ctrl+U 查看页面源码，搜索 'SNlM0e'，复制引号内的值",
+    "8": "将获取的值填入上面对应的字段",
+    "9": "保存此文件后，在 ComfyUI 中使用节点"
+  },
+
+  "_注意事项": {
+    "Cookie过期": "Cookie 可能会过期，需要定期更新",
+    "隐私安全": "此文件包含敏感信息，请勿分享或提交到代码仓库",
+    "多图支持": "节点支持最多 10 张输入图片（实验性功能）",
+    "免费使用": "使用浏览器 Cookie 方式是免费的，但可能不如官方 API 稳定"
+  }
+}
