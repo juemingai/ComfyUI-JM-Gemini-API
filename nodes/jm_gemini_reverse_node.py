@@ -201,16 +201,29 @@ class JMGeminiReverseGenerator:
                     })
                     logger.info(f"[JM-Gemini-Reverse] 图片 {i+1}/{len(input_images)} 转换完成")
 
-            # 7. 调用 Gemini
+            # 7. 构建 OpenAI 格式的消息内容
+            content = [{"type": "text", "text": prompt}]
+
+            # 添加图片（使用 data URI 格式）
+            if images_data:
+                logger.info(f"[JM-Gemini-Reverse] 添加 {len(images_data)} 张图片到请求")
+                for img_item in images_data:
+                    mime_type = img_item["mime_type"]
+                    data = img_item["data"]
+                    content.append({
+                        "type": "image_url",
+                        "image_url": {"url": f"data:{mime_type};base64,{data}"}
+                    })
+
+            # 8. 调用 Gemini（使用 OpenAI 格式的 messages 参数）
             logger.info(f"[JM-Gemini-Reverse] 调用 Gemini API - 模型: {model}")
             response = client.chat(
-                message=prompt,
-                images=images_data if images_data else None,
+                messages=[{"role": "user", "content": content}],
                 model=model,
                 reset_context=True  # 每次都是新对话
             )
 
-            # 8. 解析响应文本，提取图片 URL
+            # 9. 解析响应文本，提取图片 URL
             reply_text = response.choices[0].message.content
             logger.info(f"[JM-Gemini-Reverse] 收到响应，长度: {len(reply_text)}")
 
@@ -232,7 +245,7 @@ class JMGeminiReverseGenerator:
 
             logger.info(f"[JM-Gemini-Reverse] 找到 {len(media_urls)} 个媒体文件")
 
-            # 9. 加载第一张生成的图片
+            # 10. 加载第一张生成的图片
             media_path = media_urls[0]  # /media/gen_xxxxx
             media_id = media_path.replace("/media/", "")
             logger.info(f"[JM-Gemini-Reverse] 媒体 ID: {media_id}")
@@ -259,11 +272,11 @@ class JMGeminiReverseGenerator:
                     f"3. 磁盘空间不足"
                 )
 
-            # 10. 读取图片
+            # 11. 读取图片
             logger.info(f"[JM-Gemini-Reverse] 加载图片: {found_file}")
             pil_image = Image.open(found_file)
 
-            # 11. 保存到 ComfyUI output 目录
+            # 12. 保存到 ComfyUI output 目录
             output_dir = get_output_dir()
             timestamp = int(time.time())
             model_prefix = model.replace(".", "").replace("-", "")
@@ -272,7 +285,7 @@ class JMGeminiReverseGenerator:
             pil_image.save(output_path)
             logger.info(f"[JM-Gemini-Reverse] 图片已保存: {output_path}")
 
-            # 11. 转换为 ComfyUI tensor
+            # 13. 转换为 ComfyUI tensor
             image_tensor = pil2tensor(pil_image)
             logger.info(f"[JM-Gemini-Reverse] 生成完成，tensor shape: {image_tensor.shape}")
 
