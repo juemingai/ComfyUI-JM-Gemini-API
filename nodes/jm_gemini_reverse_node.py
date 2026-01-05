@@ -72,7 +72,7 @@ class JMGeminiReverseGenerator:
     RETURN_TYPES = ("IMAGE",)
     RETURN_NAMES = ("image",)
     FUNCTION = "generate_image"
-    CATEGORY = "JM-Gemini/Reverse"
+    CATEGORY = "JM-Gemini"
 
     def generate_image(self, prompt, model, seed=0,
                       cookies_raw="",
