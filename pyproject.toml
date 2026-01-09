@@ -4,6 +4,7 @@ version = "1.0.1"
 description = "Custom nodes for ComfyUI that generate images and videos using Google's Gemini API, supporting text-to-image, image-to-image, text-to-video, and image-to-video generation"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
+dynamic = ["dependencies"]
 
 [project.urls]
 Repository = "https://github.com/juemingai/ComfyUI-JM-Gemini-API"
@@ -11,9 +12,6 @@ Repository = "https://github.com/juemingai/ComfyUI-JM-Gemini-API"
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
-
-[project]
-dynamic = ["dependencies"]
 
 [tool.comfy]
 PublisherId = "jueming"
